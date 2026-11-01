@@ -1,0 +1,1079 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="description" content="Explore illustrated adventure scenes and spot five differences in each.">
+   <title>Adventure Pack Challenge</title>
+   <style>
+      :root {
+         color-scheme: light;
+         --paper: #f2eee2;
+         --paper-light: #fbf7eb;
+         --ink: #27483d;
+         --green: #315a4a;
+         --green-light: #e3e8d8;
+         --muted: #737b6d;
+         --line: #d8d0bd;
+         --coral: #c77352;
+         --gold: #e4c77c;
+         --serif: Georgia, "Times New Roman", serif;
+         --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      }
+
+      * {
+         box-sizing: border-box;
+      }
+
+      body {
+         min-width: 320px;
+         min-height: 100vh;
+         margin: 0;
+         color: var(--ink);
+         background:
+            radial-gradient(ellipse at 10% 0%, #fffdf4 0, transparent 36rem),
+            var(--paper);
+         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      button {
+         font: inherit;
+      }
+
+      button:focus-visible,
+      [data-target]:focus-visible {
+         outline: 3px solid var(--coral);
+         outline-offset: 3px;
+      }
+
+      .app {
+         width: min(1240px, calc(100% - 48px));
+         margin: 0 auto;
+      }
+
+      .topbar {
+         min-height: 78px;
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         gap: 18px;
+         border-bottom: 1px solid var(--line);
+      }
+
+      .brand {
+         display: flex;
+         align-items: center;
+         gap: 11px;
+      }
+
+      .brand-mark {
+         width: 36px;
+         height: 36px;
+         display: grid;
+         place-items: center;
+         border-radius: 50%;
+         background: var(--green-light);
+         color: var(--green);
+         font-size: 20px;
+      }
+
+      .brand strong {
+         display: block;
+         font-size: 11px;
+         letter-spacing: .13em;
+      }
+
+      .brand small,
+      .best,
+      .eyebrow,
+      .mono,
+      .scene-label,
+      .site-foot {
+         font-family: var(--mono);
+      }
+
+      .brand small {
+         display: block;
+         margin-top: 4px;
+         color: var(--muted);
+         font-size: 9px;
+         letter-spacing: .08em;
+      }
+
+      .best {
+         color: var(--muted);
+         font-size: 10px;
+         letter-spacing: .04em;
+      }
+
+      .best strong {
+         margin-left: 5px;
+         color: var(--ink);
+         font-size: 12px;
+      }
+
+      .welcome {
+         min-height: calc(100vh - 140px);
+         display: grid;
+         grid-template-columns: 1fr 1fr;
+         align-items: center;
+         gap: 7%;
+         position: relative;
+         padding: 48px 0 78px;
+      }
+
+      .eyebrow {
+         color: var(--coral);
+         font-size: 10px;
+         letter-spacing: .14em;
+         text-transform: uppercase;
+      }
+
+      h1,
+      h2 {
+         font-family: var(--serif);
+         letter-spacing: -.045em;
+      }
+
+      .welcome h1 {
+         margin: 22px 0 20px;
+         color: var(--ink);
+         font-size: clamp(54px, 7vw, 88px);
+         line-height: .98;
+      }
+
+      .welcome h1 em {
+         color: var(--coral);
+         font-weight: 600;
+      }
+
+      .intro {
+         max-width: 440px;
+         color: var(--muted);
+         font-size: 15px;
+         line-height: 1.8;
+      }
+
+      .primary,
+      .secondary,
+      .quiet {
+         min-height: 44px;
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         gap: 10px;
+         padding: 0 17px;
+         border: 0;
+         border-radius: 7px;
+         cursor: pointer;
+         transition: transform .16s ease, background .16s ease;
+      }
+
+      .primary {
+         margin-top: 14px;
+         color: var(--paper-light);
+         background: var(--green);
+         box-shadow: 0 4px 0 #224437;
+         font-size: 13px;
+         font-weight: 650;
+      }
+
+      .primary:hover {
+         transform: translateY(-2px);
+         background: #3c6a56;
+      }
+
+      .secondary {
+         color: var(--green);
+         background: #e6e6d9;
+         border: 1px solid #d2d4c3;
+      }
+
+      .secondary:hover,
+      .quiet:hover:not(:disabled) {
+         background: #dce1d1;
+      }
+
+      .quiet {
+         color: var(--green);
+         background: transparent;
+         border: 1px solid #c7cbb8;
+         font-size: 12px;
+      }
+
+      button:disabled {
+         opacity: .5;
+         cursor: not-allowed;
+      }
+
+      .welcome-notes {
+         display: flex;
+         gap: 16px;
+         margin-top: 25px;
+         color: #818477;
+         font: 10px var(--mono);
+      }
+
+      .journal {
+         min-height: 390px;
+         position: relative;
+         overflow: hidden;
+         border: 8px solid #e9e1cc;
+         border-radius: 45% 45% 8px 8px / 35% 35% 8px 8px;
+         background: #d9dfcd;
+         box-shadow: 0 24px 50px #24483d20;
+      }
+
+      .journal svg {
+         position: absolute;
+         inset: 0;
+         width: 100%;
+         height: 100%;
+      }
+
+      .journal-title {
+         position: absolute;
+         z-index: 2;
+         top: 26px;
+         left: 50%;
+         transform: translateX(-50%);
+         text-align: center;
+         white-space: nowrap;
+      }
+
+      .journal-title small {
+         display: block;
+         font: 9px var(--mono);
+         letter-spacing: .13em;
+      }
+
+      .journal-title strong {
+         display: block;
+         margin-top: 5px;
+         font: 600 22px var(--serif);
+      }
+
+      .journal-stamp {
+         position: absolute;
+         right: 24px;
+         bottom: 34px;
+         display: grid;
+         width: 62px;
+         height: 62px;
+         place-items: center;
+         border: 1px solid #f4e9c9;
+         border-radius: 50%;
+         color: #f8edd3;
+         font: 9px/1.2 var(--mono);
+         text-align: center;
+         transform: rotate(10deg);
+      }
+
+      .welcome-foot {
+         position: absolute;
+         right: 0;
+         bottom: 20px;
+         left: 0;
+         display: flex;
+         justify-content: space-between;
+         color: #878775;
+         font: 9px var(--mono);
+         letter-spacing: .1em;
+      }
+
+      .game {
+         padding: 36px 0 30px;
+      }
+
+      .game-heading {
+         display: flex;
+         align-items: end;
+         justify-content: space-between;
+         gap: 18px;
+      }
+
+      .game-heading h1 {
+         margin: 6px 0 4px;
+         font-size: clamp(34px, 4vw, 50px);
+      }
+
+      .game-heading p {
+         margin: 0;
+         color: var(--muted);
+         font-size: 13px;
+      }
+
+      .timer {
+         min-width: 116px;
+         padding: 10px 13px;
+         border: 1px solid #d3d6c4;
+         border-radius: 8px;
+         background: #e8e8d9;
+         color: var(--green);
+      }
+
+      .timer strong {
+         display: block;
+         font: 21px var(--mono);
+      }
+
+      .timer small {
+         font: 9px var(--mono);
+         letter-spacing: .08em;
+      }
+
+      .timer.low {
+         color: #a84938;
+         background: #f4e1d4;
+      }
+
+      .tools {
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         gap: 12px;
+         margin: 24px 0 16px;
+         padding: 12px 14px;
+         border: 1px solid #ded8c8;
+         border-radius: 8px;
+         background: #e8e5d7;
+      }
+
+      .progress {
+         display: flex;
+         align-items: center;
+         gap: 12px;
+         color: var(--green);
+      }
+
+      .progress-count {
+         font: 14px var(--mono);
+         white-space: nowrap;
+      }
+
+      .track {
+         width: 130px;
+         height: 5px;
+         overflow: hidden;
+         border-radius: 8px;
+         background: #d2d0bf;
+      }
+
+      .track span {
+         display: block;
+         height: 100%;
+         background: var(--coral);
+         transition: width .2s ease;
+      }
+
+      .progress small {
+         color: var(--muted);
+         font-size: 11px;
+      }
+
+      .tool-buttons {
+         display: flex;
+         gap: 8px;
+      }
+
+      .scene-pair {
+         display: grid;
+         grid-template-columns: 1fr 1fr;
+         gap: 24px;
+      }
+
+      .scene-label {
+         display: flex;
+         align-items: center;
+         gap: 9px;
+         height: 32px;
+         color: #40584b;
+         font-size: 10px;
+         letter-spacing: .08em;
+      }
+
+      .scene-label b {
+         display: grid;
+         width: 22px;
+         height: 22px;
+         place-items: center;
+         border-radius: 50%;
+         color: var(--paper-light);
+         background: var(--green);
+         font-weight: 400;
+      }
+
+      .scene-label small {
+         margin-left: auto;
+         color: #828374;
+         font-size: 9px;
+      }
+
+      .scene-frame {
+         overflow: hidden;
+         border: 5px solid #faf6e9;
+         border-radius: 7px;
+         box-shadow: 0 0 0 1px #b6aa8c, 0 10px 24px #24483d20;
+      }
+
+      .scene-art {
+         display: block;
+         width: 100%;
+         height: auto;
+         aspect-ratio: 5 / 3;
+         cursor: crosshair;
+         touch-action: manipulation;
+      }
+
+      .hotspot {
+         fill: transparent;
+         cursor: crosshair;
+      }
+
+      .hotspot:focus {
+         fill: #f3a14f55;
+         stroke: #ffe1a1;
+         stroke-width: 3;
+         outline: none;
+      }
+
+      .found-ring {
+         fill: none;
+         stroke: #f3a14f;
+         stroke-width: 4;
+         stroke-dasharray: 6 4;
+         pointer-events: none;
+      }
+
+      .found-dot {
+         fill: #ef8a54;
+         stroke: #fff1d6;
+         stroke-width: 2;
+         pointer-events: none;
+      }
+
+      .game-foot {
+         display: flex;
+         justify-content: space-between;
+         gap: 12px;
+         margin-top: 17px;
+         color: var(--muted);
+         font-size: 11px;
+      }
+
+      .feedback {
+         min-height: 22px;
+         margin-top: 10px;
+         color: #a55d46;
+         text-align: center;
+         font-size: 12px;
+      }
+
+      .misses {
+         color: #9d5945;
+         font: 10px var(--mono);
+         white-space: nowrap;
+      }
+
+      .overlay {
+         min-height: calc(100vh - 150px);
+         display: grid;
+         place-items: center;
+         padding: 32px 0;
+      }
+
+      .card {
+         width: min(100%, 480px);
+         padding: 36px;
+         border: 1px solid #ded5c0;
+         border-radius: 12px;
+         background: var(--paper-light);
+         box-shadow: 0 24px 70px #24483d1c;
+         text-align: center;
+      }
+
+      .card h2 {
+         margin: 12px 0;
+         color: var(--ink);
+         font-size: 42px;
+      }
+
+      .card p {
+         color: var(--muted);
+         font-size: 13px;
+         line-height: 1.7;
+      }
+
+      .score-box {
+         margin: 20px 0;
+         padding: 16px;
+         border-radius: 7px;
+         background: #ece9db;
+      }
+
+      .score-box strong {
+         display: block;
+         margin: 6px 0;
+         font: 32px var(--mono);
+      }
+
+      .score-box small,
+      .score-label {
+         color: var(--muted);
+         font: 10px var(--mono);
+      }
+
+      .card-actions {
+         display: flex;
+         flex-wrap: wrap;
+         justify-content: center;
+         gap: 9px;
+      }
+
+      .site-foot {
+         display: flex;
+         justify-content: space-between;
+         gap: 16px;
+         padding: 18px 0;
+         border-top: 1px solid var(--line);
+         color: #878775;
+         font-size: 9px;
+         letter-spacing: .08em;
+      }
+
+      @media (max-width: 760px) {
+         .app {
+            width: min(100% - 32px, 600px);
+         }
+
+         .topbar {
+            min-height: 68px;
+         }
+
+         .brand strong {
+            font-size: 9px;
+         }
+
+         .best {
+            font-size: 8px;
+         }
+
+         .welcome {
+            min-height: auto;
+            grid-template-columns: 1fr;
+            gap: 28px;
+            padding: 42px 0 72px;
+         }
+
+         .welcome h1 {
+            font-size: clamp(50px, 13vw, 76px);
+         }
+
+         .journal {
+            min-height: 300px;
+         }
+
+         .welcome-foot {
+            bottom: 18px;
+            font-size: 8px;
+         }
+
+         .game {
+            padding-top: 26px;
+         }
+
+         .tools {
+            align-items: flex-start;
+            flex-direction: column;
+         }
+
+         .progress {
+            width: 100%;
+         }
+
+         .track {
+            flex: 1;
+         }
+
+         .tool-buttons {
+            width: 100%;
+         }
+
+         .tool-buttons button {
+            flex: 1;
+         }
+
+         .scene-pair {
+            grid-template-columns: 1fr;
+            gap: 14px;
+         }
+
+         .game-foot {
+            align-items: flex-start;
+            flex-direction: column;
+         }
+
+         .site-foot {
+            font-size: 8px;
+         }
+      }
+
+      @media (max-width: 420px) {
+         .app {
+            width: calc(100% - 24px);
+         }
+
+         .brand-mark {
+            width: 30px;
+            height: 30px;
+         }
+
+         .brand {
+            gap: 7px;
+         }
+
+         .brand small {
+            font-size: 7px;
+         }
+
+         .best {
+            font-size: 7px;
+         }
+
+         .game-heading {
+            align-items: flex-start;
+         }
+
+         .game-heading h1 {
+            font-size: 32px;
+         }
+
+         .timer {
+            min-width: 90px;
+            padding: 8px;
+         }
+
+         .timer strong {
+            font-size: 18px;
+         }
+
+         .progress small {
+            font-size: 9px;
+         }
+
+         .card {
+            padding: 28px 18px;
+         }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+
+         *,
+         *::before,
+         *::after {
+            scroll-behavior: auto !important;
+            transition-duration: .01ms !important;
+            animation-duration: .01ms !important;
+         }
+      }
+   </style>
+</head>
+
+<body>
+   <div class="app" id="app"></div>
+
+   <script>
+      const bestKey = "adventure-pack-personal-best";
+      const levels = [
+         {
+            name: "The last campsite",
+            subtitle: "A quiet morning at base camp",
+            place: "PINECONE BASIN",
+            base: `
+            <rect width="600" height="360" fill="#e7bd84"/>
+            <circle cx="505" cy="66" r="22" fill="#f5dfaa" opacity=".78"/>
+            <path d="M0 167L89 82l77 91 79-81 105 92 88-95 164 102v76H0z" fill="#8e9a76"/>
+            <path d="M0 203l104-82 93 88 81-71 96 68 111-88 115 90v71H0z" fill="#71856a"/>
+            <path d="M0 230q112-44 223 4t190-3q101-42 187 2v127H0z" fill="#506d50"/>
+            <path d="M249 360q20-47 48-68 32-25 51-4 18 23 44 72" fill="#b59a6d"/>
+            <path d="M67 245l-4-84m4 14l-20-20m20 39l19-25m367 85l-4-89m4 20l-18-23m18 45l19-26" stroke="#344f40" stroke-width="9"/>
+            <path d="M36 246q30-32 60 0m332 2q33-38 68 0" fill="#3e6249"/>
+            <path d="M205 187l39-55 42 55z" fill="#dd6e4e"/>
+            <path d="M205 187h81v55h-81z" fill="#d99a66"/>
+            <path d="M235 242v-38h25v38" fill="#72533c"/>
+            <path d="M203 189h85" stroke="#f0c892" stroke-width="6"/>
+            <path d="M103 280q40-20 67 0m282 13q32-16 64 0" stroke="#a6b27a" stroke-width="5" fill="none"/>
+          `,
+            differences: [
+               { x: 244, y: 139, name: "The tent pennant changed color", left: '<path d="M240 143l9-18 9 18z" fill="#dd7652" stroke="#fff0d1" stroke-width="2"/>', right: '<path d="M240 143l9-18 9 18z" fill="#f4c75a" stroke="#fff0d1" stroke-width="2"/>' },
+               { x: 340, y: 289, name: "A mug is missing", left: '<path d="M331 280h18v22h-18z" fill="#e9c88c" stroke="#805b3d" stroke-width="2"/><path d="M349 284q10 0 6 9h-6" fill="none" stroke="#805b3d" stroke-width="3"/>', right: "" },
+               { x: 455, y: 85, name: "A bird changed shape", left: '<path d="M445 87q10-12 20 0-10 7-20 0" fill="#304c42"/><circle cx="463" cy="85" r="1.8" fill="#f5dfaa"/>', right: '<path d="M446 81l10 10m0-10l-10 10m9 3l10 8m0-8l-10 8" stroke="#304c42" stroke-width="2"/>' },
+               { x: 173, y: 246, name: "One boot disappeared", left: '<path d="M154 247l12-9 9 6-3 8h-18z" fill="#c66f4d" stroke="#f5d9ad" stroke-width="2"/>', right: "" },
+               { x: 513, y: 256, name: "The trail marker changed color", left: '<path d="M505 264l8-17 8 17z" fill="#d97850"/>', right: '<path d="M505 264l8-17 8 17z" fill="#e5c476"/>' },
+            ],
+         },
+         {
+            name: "Ruins of the green",
+            subtitle: "Where the old stone paths disappear",
+            place: "MOSSWATER JUNGLE",
+            base: `
+            <rect width="600" height="360" fill="#b8c397"/>
+            <circle cx="486" cy="57" r="29" fill="#e8cf8c" opacity=".7"/>
+            <path d="M0 164L74 73l54 85 75-112 84 119 77-91 65 96 91-113 80 109v99H0z" fill="#6d9274"/>
+            <path d="M0 193q90-43 191 0t188-5q111-34 221 4v168H0z" fill="#456650"/>
+            <path d="M147 222v-94h80v94m-91-94l51-44 52 44m-79 0v94m117-59h86v62h-86z" fill="#b39b71" stroke="#655d47" stroke-width="6"/>
+            <path d="M159 138h22v29h-22zm47 0h13v29h-13zm63 39h22v24h-22zm41 0h22v24h-22z" fill="#66765c"/>
+            <path d="M284 281q-18-31 8-55t-1-48m-3 44l-24-9m25-19l17-12" fill="none" stroke="#8e9c62" stroke-width="7"/>
+            <path d="M70 270l8-72m0 23l-22-26m22 47l22-32m373 63l-4-100m4 27l-19-25m19 43l21-30" stroke="#3f654e" stroke-width="11"/>
+            <path d="M0 322q118-43 229-9t193 0q94-31 178 2v45H0z" fill="#2f5547"/>
+            <path d="M67 280q-26-15-42 4m420-9q31-24 56-2" fill="none" stroke="#a7b47d" stroke-width="5"/>
+          `,
+            differences: [
+               { x: 83, y: 82, name: "A stone carving changed color", left: '<path d="M73 90l10-18 10 18z" fill="#df8758" stroke="#584b37" stroke-width="2"/>', right: '<path d="M73 90l10-18 10 18z" fill="#decf9c" stroke="#584b37" stroke-width="2"/>' },
+               { x: 270, y: 112, name: "A hanging vine is missing", left: '<path d="M267 100q-12 10 0 22m8-24q-10 11 3 20" fill="none" stroke="#8e9c62" stroke-width="4"/>', right: "" },
+               { x: 505, y: 82, name: "A bird took flight", left: '<path d="M494 84q11-12 21 0-10 8-21 0" fill="#dc7652"/><circle cx="505" cy="82" r="2" fill="#304c42"/>', right: '<path d="M495 77l12 10m0-10l-12 10" stroke="#3e5142" stroke-width="2"/>' },
+               { x: 156, y: 253, name: "The flower changed color", left: '<circle cx="156" cy="253" r="8" fill="#e59667" stroke="#765742" stroke-width="2"/>', right: '<circle cx="156" cy="253" r="8" fill="#eed27e" stroke="#765742" stroke-width="2"/>' },
+               { x: 421, y: 254, name: "A stepping stone moved", left: '<ellipse cx="421" cy="254" rx="14" ry="8" fill="#c4b48b" stroke="#786648" stroke-width="2"/>', right: '<ellipse cx="421" cy="254" rx="9" ry="13" fill="#c4b48b" stroke="#786648" stroke-width="2"/>' },
+            ],
+         },
+         {
+            name: "Above the clouds",
+            subtitle: "The trail ends at a remarkable view",
+            place: "NORTH RIDGE",
+            base: `
+            <rect width="600" height="360" fill="#b9c8ba"/>
+            <circle cx="523" cy="57" r="27" fill="#f4da91"/>
+            <path d="M0 176l104-121 77 105L300 47l100 119 93-123 107 126v110H0z" fill="#879a91"/>
+            <path d="M42 166l62-111 48 78-34-19-22 32-21-18zM239 130L300 47l65 82-34-17-27 26-23-22zM441 143l52-100 57 91-35-19-22 25-20-18z" fill="#efe5cb"/>
+            <path d="M0 228q110-48 204 0t191-6q103-38 205 0v138H0z" fill="#728a72"/>
+            <path d="M0 251q122-25 213 18t183-8q98-43 204-1v100H0z" fill="#536f60"/>
+            <path d="M66 235l76-55 62 34 67-41 85 58 68-47 103 39" fill="none" stroke="#d6c59c" stroke-width="5"/>
+            <path d="M95 240l13-16 16 17m295 8l14-16 16 17" fill="none" stroke="#e3d2ac" stroke-width="4"/>
+            <path d="M49 257l-5-100m5 25l-22-28m22 51l20-28m454 80l-7-95m7 19l-21-25m21 47l21-29" stroke="#405e4c" stroke-width="10"/>
+            <path d="M276 226h33v-18q-16-18-33 0z" fill="#c27e51"/>
+            <path d="M273 228h39" stroke="#554d3c" stroke-width="5"/>
+            <path d="M245 360q29-29 66-27t63 27" fill="#baa17b"/>
+          `,
+            differences: [
+               { x: 85, y: 87, name: "The trail flag changed color", left: '<path d="M76 96l10-18 11 18z" fill="#e37954" stroke="#f5e6bf" stroke-width="2"/>', right: '<path d="M76 96l10-18 11 18z" fill="#e5c970" stroke="#f5e6bf" stroke-width="2"/>' },
+               { x: 259, y: 99, name: "A cloud has vanished", left: '<g fill="#fff1d1"><ellipse cx="253" cy="101" rx="15" ry="6"/><circle cx="264" cy="97" r="7"/></g>', right: "" },
+               { x: 523, y: 57, name: "The sun changed size", left: '<circle cx="523" cy="57" r="27" fill="#f4da91"/>', right: '<circle cx="523" cy="57" r="15" fill="#f4da91"/>' },
+               { x: 169, y: 251, name: "The trail cairn changed color", left: '<path d="M157 258l12-15 11 15z" fill="#bd8f62" stroke="#6f5c48" stroke-width="2"/><path d="M162 253h12" stroke="#8d6849" stroke-width="2"/>', right: '<path d="M157 258l12-15 11 15z" fill="#d4b27d" stroke="#6f5c48" stroke-width="2"/>' },
+               { x: 438, y: 251, name: "A backpack is missing", left: '<rect x="429" y="240" width="19" height="21" rx="4" fill="#d47b4e"/><path d="M433 241q1-9 11-1" fill="none" stroke="#5b5542" stroke-width="3"/>', right: "" },
+            ],
+         },
+      ];
+
+      let screen = "welcome";
+      let levelIndex = 0;
+      let found = [];
+      let seconds = 90;
+      let misses = 0;
+      let hints = 2;
+      let usedHints = 0;
+      let levelScore = 0;
+      let totalScore = 0;
+      let feedback = "";
+      let timerId = null;
+
+      let personalBest = 0;
+      try {
+         personalBest = Number(localStorage.getItem(bestKey) || 0);
+      } catch {
+         personalBest = 0;
+      }
+
+      const app = document.getElementById("app");
+      const currentLevel = () => levels[levelIndex];
+      const timeText = () => `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+
+      function sceneSvg(side) {
+         const level = currentLevel();
+         const differences = level.differences;
+         const differenceArtwork = differences.map((difference, index) => side === 0 ? difference.left : difference.right).join("");
+         const markers = found.map(index => {
+            const [x, y] = [differences[index].x, differences[index].y];
+            return `<g pointer-events="none"><circle class="found-ring" cx="${x}" cy="${y}" r="19"/><circle class="found-dot" cx="${x}" cy="${y}" r="5"/></g>`;
+         }).join("");
+         const hotspots = differences.map((difference, index) =>
+            `<circle class="hotspot" data-target="${index}" cx="${difference.x}" cy="${difference.y}" r="25" tabindex="0" role="button" aria-label="Find difference: ${difference.name.replaceAll('"', "&quot;")}"/>`
+         ).join("");
+
+         return `
+          <svg class="scene-art" viewBox="0 0 600 360" role="group" aria-label="${level.name}, scene ${side === 0 ? "A" : "B"}" data-side="${side}">
+            ${level.base}
+            ${differenceArtwork}
+            ${markers}
+            ${hotspots}
+            <rect x="8" y="8" width="584" height="344" rx="5" fill="none" stroke="#f6e8c8" stroke-width="2" opacity=".7" pointer-events="none"/>
+          </svg>`;
+      }
+
+      function header() {
+         return `
+          <header class="topbar">
+            <div class="brand">
+              <span class="brand-mark" aria-hidden="true">⌖</span>
+              <span><strong>ADVENTURE PACK CHALLENGE</strong><small>SPOT THE DIFFERENCE · VOL. 01</small></span>
+            </div>
+            <div class="best">PERSONAL BEST <strong>${personalBest.toLocaleString()}</strong></div>
+          </header>`;
+      }
+
+      function welcomeScreen() {
+         return `
+          <main class="welcome">
+            <section>
+              <div class="eyebrow">YOUR NEXT LITTLE EXPEDITION</div>
+              <h1>Look closer.<br><em>Wander further.</em></h1>
+              <p class="intro">Two scenes from the trail. Five things have changed. Take a breath, trust your eye, and see what the day reveals.</p>
+              <button class="primary" data-action="start">Start exploring <span aria-hidden="true">→</span></button>
+              <div class="welcome-notes"><span>◷ 90 seconds each</span><span>·</span><span>◉ 5 clues per scene</span></div>
+            </section>
+            <div class="journal" role="img" aria-label="Illustrated mountain campsite">
+              <div class="journal-title"><small>FIELD SKETCH Nº 01</small><strong>Pinecone Basin</strong></div>
+              <svg viewBox="0 0 520 390" aria-hidden="true">
+                <path d="M0 195L99 67l78 101L269 43l98 136 75-95 78 99v207H0z" fill="#96a18a"/>
+                <path d="M47 175L99 67l43 83-27-12-16 22-17-16zm168-17L269 43l62 94-33-19-27 25-22-21zm159-10l68-64 45 92-29-14-22 17-18-17z" fill="#f0e5ca"/>
+                <path d="M0 234q114-59 224-6t296-2v164H0z" fill="#718269"/>
+                <path d="M0 293q139-62 260-5t260-2v104H0z" fill="#45634d"/>
+                <path d="M176 258l72-98 73 98z" fill="#de7653"/>
+                <path d="M176 258h145v86H176z" fill="#d4a275"/>
+                <path d="M230 344v-56h39v56" fill="#6d503c"/>
+                <path d="M167 261h163" stroke="#f2d29a" stroke-width="8"/>
+                <path d="M78 332l-5-94m5 23l-20-24m20 44l19-27m336 82l-7-110m7 29l-22-25m22 50l23-31" stroke="#3d5d48" stroke-width="12"/>
+                <path d="M54 358q48-40 93 0m280 2q41-46 82 0" fill="none" stroke="#a6b37c" stroke-width="7"/>
+                <circle cx="423" cy="89" r="27" fill="#f2d790"/>
+              </svg>
+              <div class="journal-stamp">TRAIL<br>MARKED</div>
+            </div>
+            <div class="welcome-foot"><span>THREE PLACES. FIFTEEN DETAILS.</span><span>MADE FOR UNHURRIED MINDS</span></div>
+          </main>`;
+      }
+
+      function gameScreen() {
+         const level = currentLevel();
+         return `
+          <main class="game">
+            <div class="game-heading">
+              <div>
+                <div class="eyebrow">EXPEDITION ${String(levelIndex + 1).padStart(2, "0")} / 03</div>
+                <h1>${level.name}</h1>
+                <p>${level.subtitle}</p>
+              </div>
+              <div class="timer ${seconds <= 15 ? "low" : ""}" aria-live="polite">
+                <strong>${timeText()}</strong><small>REMAINING</small>
+              </div>
+            </div>
+            <div class="tools">
+              <div class="progress">
+                <strong class="progress-count">${String(found.length).padStart(2, "0")} / 05</strong>
+                <div class="track" aria-label="${found.length} of 5 differences found"><span style="width:${found.length * 20}%"></span></div>
+                <small>differences found</small>
+              </div>
+              <div class="tool-buttons">
+                <button class="quiet" data-action="hint" ${hints < 1 || found.length === 5 ? "disabled" : ""}>Hint · ${hints}</button>
+                <button class="quiet" data-action="pause">Pause</button>
+              </div>
+            </div>
+            <div class="scene-pair">
+              <section>
+                <div class="scene-label"><b>A</b> THE FIRST LOOK <small>${level.place}</small></div>
+                <div class="scene-frame">${sceneSvg(0)}</div>
+              </section>
+              <section>
+                <div class="scene-label"><b>B</b> THE SECOND LOOK <small>${level.place}</small></div>
+                <div class="scene-frame">${sceneSvg(1)}</div>
+              </section>
+            </div>
+            <div class="game-foot">
+              <span>Scan both scenes. Differences are marked in both once found.</span>
+              <span class="misses">MISSES · ${misses}</span>
+            </div>
+            <div class="feedback" role="status" aria-live="polite">${feedback || "Keep your eyes on the details"}</div>
+          </main>`;
+      }
+
+      function pausedScreen() {
+         return `
+          <main class="overlay">
+            <section class="card">
+              <div class="eyebrow">TRAIL BREAK</div>
+              <h2>Take your time.</h2>
+              <p>Your place is saved right here. The clock will wait.</p>
+              <button class="primary" data-action="resume">Back to the trail</button>
+              <div><button class="secondary" data-action="restart">Start this journey over</button></div>
+            </section>
+          </main>`;
+      }
+
+      function resultScreen() {
+         const won = found.length === 5;
+         return `
+          <main class="overlay">
+            <section class="card">
+              <div class="eyebrow">${won ? "SCENE COMPLETE" : "TIME ON THE TRAIL"}</div>
+              <h2>${won ? "Sharp eyes." : "Good wandering."}</h2>
+              <p>${won ? "Every little detail found. Onward, explorer." : "The trail has gone quiet for now. You can take another look whenever you like."}</p>
+              <div class="score-box">
+                <span class="score-label">THIS SCENE</span>
+                <strong>${levelScore.toLocaleString()} <small>pts</small></strong>
+                <span class="score-label">TIME LEFT ${timeText()} · MISSES ${misses} · HINTS ${usedHints}</span>
+              </div>
+              <div class="card-actions">
+                <button class="primary" data-action="${won ? "continue" : "replay"}">${won ? (levelIndex < 2 ? "Next destination" : "See the expedition") : "Try this scene again"} →</button>
+                <button class="secondary" data-action="restart">Restart journey</button>
+              </div>
+            </section>
+          </main>`;
+      }
+
+      function completeScreen() {
+         return `
+          <main class="overlay">
+            <section class="card">
+              <div class="eyebrow">EXPEDITION COMPLETE · 03 / 03</div>
+              <h2>You found your way.</h2>
+              <p>Three places, fifteen small wonders. Thanks for taking the scenic route.</p>
+              <div class="score-box"><span class="score-label">TOTAL FIELD SCORE</span><strong>${totalScore.toLocaleString()}</strong><span class="score-label">PERSONAL BEST ${personalBest.toLocaleString()}</span></div>
+              <button class="primary" data-action="restart">Take another expedition ↻</button>
+            </section>
+          </main>`;
+      }
+
+      function render() {
+         const page =
+            screen === "welcome" ? welcomeScreen() :
+               screen === "playing" ? gameScreen() :
+                  screen === "paused" ? pausedScreen() :
+                     screen === "result" ? resultScreen() :
+                        completeScreen();
+
+         app.innerHTML = `${header()}${page}<footer class="site-foot"><span>ADVENTURE PACK CHALLENGE</span><span>OPEN THE JOURNAL. FIND THE LITTLE THINGS.</span></footer>`;
+      }
+
+      function startGame(index = 0, keepScore = false) {
+         window.clearInterval(timerId);
+         levelIndex = index;
+         found = [];
+         seconds = 90;
+         misses = 0;
+         hints = 2;
+         usedHints = 0;
+         levelScore = 0;
+         feedback = "";
+         if (!keepScore) totalScore = 0;
+         screen = "playing";
+         render();
+         timerId = window.setInterval(() => {
+            if (screen !== "playing") return;
+            seconds -= 1;
+            if (seconds <= 0) {
+               seconds = 0;
+               finishRound(false);
+            } else {
+               render();
+            }
+         }, 1000);
+      }
+
+      function finishRound(won) {
+         if (screen !== "playing") return;
+         window.clearInterval(timerId);
+         levelScore = won
+            ? Math.max(0, seconds * 12 - misses * 35 - usedHints * 70)
+            : 0;
+         if (won) totalScore += levelScore;
+         personalBest = Math.max(personalBest, totalScore);
+         try {
+            localStorage.setItem(bestKey, String(personalBest));
+         } catch {
+            // The game still works if browser storage is unavailable.
+         }
+         screen = "result";
+         render();
+      }
+
+      function markFound(index, fromHint = false) {
+         if (screen !== "playing" || found.includes(index)) return;
+         found = [...found, index];
+         if (fromHint) {
+            hints -= 1;
+            usedHints += 1;
+         }
+         feedback = fromHint
+            ? `Hint revealed: ${currentLevel().differences[index].name}`
+            : `Found it: ${currentLevel().differences[index].name}`;
+         render();
+         if (found.length === 5) {
+            window.setTimeout(() => finishRound(true), 550);
+         }
+      }
+
+      function markMiss() {
+         misses += 1;
+         feedback = "Not quite. Keep looking.";
+         render();
+         window.setTimeout(() => {
+            if (screen === "playing") {
+               feedback = "";
+               render();
+            }
+         }, 1000);
+      }
+
+      function handleSceneClick(event) {
+         if (screen !== "playing") return;
+         const svg = event.target.closest(".scene-art");
+         if (!svg) return;
+         const target = event.target.closest("[data-target]");
+         if (target) {
+            markFound(Number(target.dataset.target));
+            return;
+         }
+         const rect = svg.getBoundingClientRect();
+         const x = ((event.clientX - rect.left) / rect.width) * 600;
+         const y = ((event.clientY - rect.top) / rect.height) * 360;
+         const index = currentLevel().differences.findIndex((difference, i) =>
+            !found.includes(i) && Math.hypot(difference.x - x, difference.y - y) < 29
+         );
+         if (index >= 0) markFound(index);
+         else markMiss();
+      }
+
+      app.addEventListener("click", (event) => {
+         const button = event.target.closest("[data-action]");
+         if (button) {
+            const action = button.dataset.action;
+            if (action === "start" || action === "restart") startGame();
+            if (action === "pause") { screen = "paused"; render(); }
+            if (action === "resume") { screen = "playing"; render(); }
+            if (action === "replay") startGame(levelIndex);
+            if (action === "continue") {
+               if (levelIndex < levels.length - 1) startGame(levelIndex + 1, true);
+               else { screen = "complete"; render(); }
+            }
+            if (action === "hint" && hints > 0 && found.length < 5) {
+               const index = currentLevel().differences.findIndex((_, i) => !found.includes(i));
+               if (index >= 0) markFound(index, true);
+            }
+            return;
+         }
+         handleSceneClick(event);
+      });
+
+      app.addEventListener("keydown", (event) => {
+         if ((event.key === "Enter" || event.key === " ") && event.target.matches("[data-target]")) {
+            event.preventDefault();
+            markFound(Number(event.target.dataset.target));
+         }
+      });
+
+      render();
+   </script>
+</body>
+
+</html>
+```
